@@ -230,24 +230,28 @@ Module.register("MMM-Spotify", {
   updatePlaying: function(newPlayback) {
     var s = document.getElementById("SPOTIFY")
     var p = document.getElementById("SPOTIFY_CONTROL_PLAY")
-    var pi = document.createElement("span")
-    pi.className = "iconify"
-    pi.dataset.inline = "false"
+    var scio = document.getElementById("SPOTIFY_COVER")
+    var pi = document.createElement("img")
     if(newPlayback.is_playing) {
       s.classList.add("playing")
       s.classList.remove("pausing")
       s.classList.remove("inactive")
-      pi.dataset.icon = "mdi:play-circle-outline"
       p.className = "playing"
+      const prev_pi = document.getElementById("SPOTIFY_COVER_PAUSE_BUTTON")
+      if(prev_pi)
+	    scio.removeChild(prev_pi)
     } else {
       s.classList.add("pausing")
       s.classList.remove("playing")
       s.classList.remove("inactive")
-      pi.dataset.icon = "mdi:pause-circle-outline"
       p.className = "pausing"
+      pi.id = "SPOTIFY_COVER_PAUSE_BUTTON"
+      pi.src = this.file("/resources/pause-button.png")
+      pi.className = 'floating'
+      scio.appendChild(pi)
     }
     p.innerHTML = ""
-    p.appendChild(pi)
+    console.log('porcamadonna', scio)
     this.sendNotification("SPOTIFY_UPDATE_PLAYING", newPlayback.is_playing)
   },
 
